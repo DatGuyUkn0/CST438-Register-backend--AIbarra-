@@ -45,19 +45,19 @@ public class StudentController {
 	}
 	
 	
-//	private StudentDTO createStudentDTO(Student e)
-//	{
-//		StudentDTO Newstudent = new StudentDTO();
-//		Newstudent.student_id =e.getStudent_id();
-//		Newstudent.email = e.getEmail();
-//		Newstudent.name = e.getName();
-//		Newstudent.status = e.getStatus();
-//		Newstudent.statusCode = e.getStatusCode();
-//		
-//		return Newstudent;
-//		
-//	}
-//	
+	private StudentDTO createStudentDTO(Student e)
+	{
+		StudentDTO Newstudent = new StudentDTO();
+		Newstudent.student_id =e.getStudent_id();
+		Newstudent.email = e.getEmail();
+		Newstudent.name = e.getName();
+		Newstudent.status = e.getStatus();
+		Newstudent.statusCode = e.getStatusCode();
+		
+		return Newstudent;
+		
+	}
+	
 //	@GetMapping("/student")
 //	
 //	@DeleteMapping("/student/{student_id}")

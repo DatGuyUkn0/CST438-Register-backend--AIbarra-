@@ -8,7 +8,22 @@ public class StudentDTO {
 	public String email;
 	public String status; 
 	public int statusCode;
+	
+	public StudentDTO() {
+		this.student_id = 0;
+		this.name = null;
+		this.email = null;
+		this.status = null;
+		this.statusCode = 0;
+	}
 
+		public StudentDTO(String email,String name) {
+			this.student_id = 0;
+			this.email = email;
+			this.name = name;
+			this.status = null;
+			this.statusCode = 0;
+		}
 	
 	@Override
 	public String toString() {

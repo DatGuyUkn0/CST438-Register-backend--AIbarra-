@@ -1,6 +1,7 @@
 package com.cst438.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +23,47 @@ public class StudentController {
 	
 	@PostMapping("/student")
 	@Transactional
-	public StudentDTO CreateNewStudent(@RequestParam("email")String email, @RequestParam("name") String name) {
-		String present = email;
+	public StudentDTO CreateNewStudent(@RequestBody StudentDTO Newstudent) {
+		
+		
+		String present = Newstudent.email;
 		Student student = studentRepository.findByEmail(present);
+		
+		System.out.println("Student object:" + student );
 		if(student == null) {
-			System.out.println("New Student has been added!");
-			StudentDTO NewStudent() // What is the new Student object? How is it created? should I initialize ID will it register that?
-			return NewStudent;
+			Student New = new Student();
+			New.setEmail(Newstudent.email);
+			New.setName(Newstudent.name);
+			Student Saved = studentRepository.save(New);
+			
+			StudentDTO studentDTO = createStudentDTO(Saved);
+			System.out.println("New student has been added!");
+			return studentDTO;
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is already in use.");
 		}
 	}
 	
 	
-	@GetMapping("/student")
-	
-	@DeleteMapping("/student/{student_id}")
-	@Transactional
-	public void DeleteStudent(@RequestParam("student_id") String student_id){
-		
-	}
+//	private StudentDTO createStudentDTO(Student e)
+//	{
+//		StudentDTO Newstudent = new StudentDTO();
+//		Newstudent.student_id =e.getStudent_id();
+//		Newstudent.email = e.getEmail();
+//		Newstudent.name = e.getName();
+//		Newstudent.status = e.getStatus();
+//		Newstudent.statusCode = e.getStatusCode();
+//		
+//		return Newstudent;
+//		
+//	}
+//	
+//	@GetMapping("/student")
+//	
+//	@DeleteMapping("/student/{student_id}")
+//	@Transactional
+//	public void DeleteStudent(@RequestParam("student_id") String student_id){
+//		
+//	}
 
 }

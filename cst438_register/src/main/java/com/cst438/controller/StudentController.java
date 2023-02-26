@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.cst438.domain.Student;
 import com.cst438.domain.StudentDTO;
 import com.cst438.domain.StudentRepository;
+
 
 @RestController
 public class StudentController {
@@ -58,6 +61,23 @@ public class StudentController {
 		
 	}
 	
+	@PatchMapping("/student/{email}")
+	public void studentHold(@PathVariable String email)
+	{
+		Student Modstudent = studentRepository.findByEmail(email);
+		if(Modstudent.getStatusCode() == 0)
+		{
+			Modstudent.setStatusCode(1);
+		}
+		else
+		{
+			Modstudent.setStatusCode(0);
+		}
+		Student set = studentRepository.save(Modstudent);
+		
+	}
+	
+
 //	@GetMapping("/student")
 //	
 //	@DeleteMapping("/student/{student_id}")

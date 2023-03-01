@@ -51,7 +51,7 @@ public class StudentController {
 	private StudentDTO createStudentDTO(Student e)
 	{
 		StudentDTO Newstudent = new StudentDTO();
-		Newstudent.student_id =e.getStudent_id();
+		Newstudent.student_id = e.getStudent_id();
 		Newstudent.email = e.getEmail();
 		Newstudent.name = e.getName();
 		Newstudent.status = e.getStatus();
@@ -62,7 +62,8 @@ public class StudentController {
 	}
 	
 	@PatchMapping("/student/{email}")
-	public void studentHold(@PathVariable String email)
+	@Transactional
+	public StudentDTO studentHold(@PathVariable String email)
 	{
 		Student Modstudent = studentRepository.findByEmail(email);
 		if(Modstudent.getStatusCode() == 0)
@@ -74,6 +75,8 @@ public class StudentController {
 			Modstudent.setStatusCode(0);
 		}
 		Student set = studentRepository.save(Modstudent);
+		StudentDTO results = createStudentDTO(set);
+		return results;
 		
 	}
 	

@@ -34,10 +34,8 @@ class StudentControllerTest {
 	public static final String Test_Present_Student_Email = "test@csumb.edu";
 	public static final String Test_Present_Student_Name = "test";
 
-
 	@MockBean
 	StudentRepository studentRepository;
-	
 
 	@Autowired
 	private MockMvc mvc;
@@ -45,17 +43,18 @@ class StudentControllerTest {
 	@Test
 	public void createNewStudent() throws Exception {
 		MockHttpServletResponse response;
+		//Creates new student object
 		Student Newstudent = new Student();
 		Newstudent.setEmail(Test_Student_Email);
 		Newstudent.setEmail(Test_Student_Email);
-		
+		//asserts any changes to student object
 		given(studentRepository.save(any(Student.class))).willReturn(Newstudent);
+		
 		
 	    StudentDTO studentDTO = new StudentDTO();
 	    studentDTO.email = Test_Student_Email;
 	    studentDTO.name = Test_Student_Name;
-	    
-	    
+	  
 		response = mvc.perform(
 				MockMvcRequestBuilders
 			      .post("/student")
@@ -63,9 +62,6 @@ class StudentControllerTest {
 			      .contentType(MediaType.APPLICATION_JSON)
 			      .accept(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse();
-		
-		
-		
 		
 		// Returns OK
 		assertEquals(200, response.getStatus());
@@ -84,18 +80,18 @@ class StudentControllerTest {
 	@Test
 	public void studentHold() throws Exception{
 		MockHttpServletResponse response;
+		//creates new student object
 		Student student = new Student();
 		student.setEmail(Test_Student_Email);
 		student.setName(Test_Student_Name);
 		student.setStatusCode(0);
 		
+		//asserts existence in repository
 		given(studentRepository.save(student)).willReturn(student);
 
 		//Will Confirm that student exists 
 	    given(studentRepository.findByEmail(Test_Student_Email)).willReturn(student);
 	    
-	  
-		
 		response = mvc.perform(
 				MockMvcRequestBuilders
 			      .patch("/student/JFloor@csumb.edu"))
@@ -103,8 +99,10 @@ class StudentControllerTest {
 		
 		// verify returns OK
 		assertEquals(200, response.getStatus());
-		
+
 		StudentDTO result = fromJsonString(response.getContentAsString(), StudentDTO.class);
+		//Asserts that student original statusCode is no longer 0
+		// this is now reflecting a Hold on their account
 		assertNotEquals( 0  , result.statusCode);
 		
 		response = mvc.perform(
@@ -116,6 +114,7 @@ class StudentControllerTest {
 		assertEquals(200, response.getStatus());
 		
 		StudentDTO result_2 = fromJsonString(response.getContentAsString(), StudentDTO.class);
+		//Asserts that changes have in fact been made to the student repository.
 		assertNotEquals( 1  , result_2.statusCode);
 		
 		// verify that repository save method was called
@@ -123,11 +122,6 @@ class StudentControllerTest {
 		// verify that repository find method was called
 		verify(studentRepository, times(2)).findByEmail(Test_Student_Email);
 	}
-	
-	
-	
-	
-	
 	
 	private static String asJsonString(final Object obj) {
 		try {
